@@ -6,10 +6,12 @@
 </head>
 <body>
 <h1>Associates Template</h1>
-<ul th:each="associate : ${associateList}">
-    <li>Usuario con nombre <b>[[${associate.name}]]</b> y email <b>[[${associate.email}]]</b></li>
-    <li th:text="|Usuario con nombre ${associate.name} y email ${associate.email}"></li>
 
+<ul th:unless="${#lists.isEmpty(associateList)}">
+    <li th:each="associate : ${associateList}">
+        Usuario con nombre <b>[[${associate.name}]]</b> y email <b>[[${associate.email}]]</b>
+    </li>
 </ul>
+
 </body>
 </html>
