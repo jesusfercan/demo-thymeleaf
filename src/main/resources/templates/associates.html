@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Associates Template</title>
+</head>
+<body>
+<h1>Associates Template</h1>
+<ul th:each="associate : ${associateList}">
+    <li>Usuario con nombre <b>[[${associate.name}]]</b> y email <b>[[${associate.email}]]</b></li>
+    <li th:text="|Usuario con nombre ${associate.name} y email ${associate.email}"></li>
+
+</ul>
+</body>
+</html>
