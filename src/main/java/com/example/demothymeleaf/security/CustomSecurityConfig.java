@@ -54,6 +54,7 @@ public class CustomSecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/webfonts/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
                         .anyRequest().authenticated()
                     )

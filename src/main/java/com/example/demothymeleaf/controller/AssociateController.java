@@ -22,6 +22,8 @@ public class AssociateController {
         mv.setViewName("associates");
         mv.setStatus(HttpStatus.OK);
         mv.addObject("associateList",associateService.getAllAssociates());
+        mv.addObject("importDataTables",true);
+
 
         return mv;
     }

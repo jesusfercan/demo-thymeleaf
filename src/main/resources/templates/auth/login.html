@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments :: fragmentHead}">
+<html xmlns:th="http://www.thymeleaf.org" >
+<head th:insert="~{fragments/headerFooter :: fragmentHead}">
     <title>Login page</title>
 </head>
 <body class="bg-gradient-primary">
@@ -56,6 +56,6 @@
 </div>
 
 
-<th:block th:insert="~{fragments :: fragmentFoot}"/>
+<th:block th:insert="~{fragments/headerFooter :: fragmentFoot}"/>
 </body>
 </html>
