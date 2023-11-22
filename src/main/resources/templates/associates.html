@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Associates Template</title>
+<head th:insert="~{fragments :: fragmentHead}">
+    <title>Associates page</title>
 </head>
 <body>
 <h1>Associates Template</h1>
@@ -14,4 +13,5 @@
 </ul>
 
 </body>
+<th:block th:insert="~{fragments :: fragmentFoot}"/>
 </html>
