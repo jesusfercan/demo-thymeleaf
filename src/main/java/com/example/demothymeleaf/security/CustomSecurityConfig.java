@@ -1,5 +1,7 @@
 package com.example.demothymeleaf.security;
 
+import com.example.demothymeleaf.service.RecaptchaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,10 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class CustomSecurityConfig {
+
+    @Autowired
+    private RecaptchaService recaptchaService;
 
 
    @Bean
@@ -58,6 +64,7 @@ public class CustomSecurityConfig {
                         .requestMatchers("/img/**").permitAll()
                         .anyRequest().authenticated()
                     )
+                .addFilterBefore(new RecaptchaFilter(recaptchaService), UsernamePasswordAuthenticationFilter.class)
                 ;
 
         return http.build();

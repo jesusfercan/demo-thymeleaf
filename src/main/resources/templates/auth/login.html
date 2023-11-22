@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
-<head th:insert="~{fragments/headerFooter :: fragmentHead}">
+<head>
     <title>Login page</title>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <th:block  th:insert="~{fragments/headerFooter :: fragmentHead}"></th:block>
 </head>
 <body class="bg-gradient-primary">
 <div class="container">
@@ -41,7 +43,15 @@
                                                 Me</label>
                                         </div>
                                     </div>
+
                                     <input name="submit" type="submit" value="submit" class="btn btn-primary btn-user btn-block" />
+                                    <div class="dropdown-divider"></div>
+
+                                    <div class="g-recaptcha brochure__form__captcha" data-sitekey="6LdhlhgpAAAAAA4Owsyw2XBXz6FHJLZfsgsvM32N"></div>
+                                    <span id="captchaError" class="alert alert-danger col-sm-4"
+                                          style="display:none"></span>
+
+
                                 </form>
                             </div>
                         </div>
