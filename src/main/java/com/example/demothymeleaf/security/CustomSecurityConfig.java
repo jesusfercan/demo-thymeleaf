@@ -41,6 +41,7 @@ public class CustomSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new RecaptchaFilter(recaptchaService,"/auth/login?error=2"), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .maximumSessions(1)
@@ -49,7 +50,7 @@ public class CustomSecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/checkLogin")
-                        .failureUrl("/auth/login?error=true")
+                        .failureUrl("/auth/login?error=1")
                         .defaultSuccessUrl("/"))
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
@@ -64,7 +65,6 @@ public class CustomSecurityConfig {
                         .requestMatchers("/img/**").permitAll()
                         .anyRequest().authenticated()
                     )
-                .addFilterBefore(new RecaptchaFilter(recaptchaService), UsernamePasswordAuthenticationFilter.class)
                 ;
 
         return http.build();

@@ -1,5 +1,6 @@
 package com.example.demothymeleaf.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthorizationController {
 
     @GetMapping("/login")
-    public ModelAndView login(@RequestParam(required = false) Boolean error){
+    public ModelAndView login(@RequestParam(required = false) Integer error){
         ModelAndView mv = new ModelAndView();
         mv.setViewName("auth/login");
 
-        if(error!=null && error)
-            mv.addObject("error",true);
+        if(error!=null)
+            mv.addObject("error"+error,true);
+
+
 
         return mv;
     }

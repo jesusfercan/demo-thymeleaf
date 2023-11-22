@@ -21,7 +21,9 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h2 th:if="${error}">Error</h2>
+                                    <div th:if="${error1}" class="alert alert-danger" role="alert">
+                                        Usuario o clave incorrecto!
+                                    </div>
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
                                 <form class="user"  name='f' action="/auth/checkLogin" method='POST'>
@@ -47,7 +49,11 @@
                                     <input name="submit" type="submit" value="submit" class="btn btn-primary btn-user btn-block" />
                                     <div class="dropdown-divider"></div>
 
-                                    <div class="g-recaptcha brochure__form__captcha" data-sitekey="6LdhlhgpAAAAAA4Owsyw2XBXz6FHJLZfsgsvM32N"></div>
+                                    <div th:if="${error2}" class="alert alert-danger" role="alert">
+                                        Error al procesar el captcha!
+                                    </div>
+
+                                    <div class="g-recaptcha brochure__form__captcha" th:data-sitekey="${@environment.getProperty('google.recaptcha.key.data-sitekey')}"></div>
                                     <span id="captchaError" class="alert alert-danger col-sm-4"
                                           style="display:none"></span>
 
