@@ -21,9 +21,8 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <div th:if="${error1}" class="alert alert-danger" role="alert">
-                                        Usuario o clave incorrecto!
-                                    </div>
+                                    <div th:if="${error1}" class="alert alert-danger" role="alert">Usuario o clave incorrecto!</div>
+                                    <div th:if="${error3}" class="alert alert-danger" role="alert">Sesión expirada!</div>
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
                                 <form class="user"  name='f' action="/auth/checkLogin" method='POST'>

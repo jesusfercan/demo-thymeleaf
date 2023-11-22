@@ -41,10 +41,10 @@ public class CustomSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new RecaptchaFilter(recaptchaService,"/auth/login?error=2"), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
+                        //.invalidSessionUrl("/auth/login?error=3")//todo: probar, no conseguido funcionar
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .maximumSessions(1)
-                        .expiredUrl("/auth/logout"))
-                        // todo .expiredUrl("/auth/logout"))
+                        .expiredUrl("/auth/login?error=3")) //todo: probar, no conseguido funcionar
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/checkLogin")
