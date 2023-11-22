@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragments/headerFooter :: fragmentHead}">
-    <title>Associates page</title>
+<head>
+    <title th:text="#{associate.page.title}">Associates page</title>
+    <th:block  th:insert="~{fragments/headerFooter :: fragmentHead}"></th:block>
+
 </head>
 <body id="page-top">
 
