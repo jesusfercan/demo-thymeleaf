@@ -2,21 +2,22 @@ package com.example.demothymeleaf.service;
 
 import com.example.demothymeleaf.entity.Associate;
 import com.example.demothymeleaf.repository.AssociateRepository;
-import com.example.demothymeleaf.repository.AssociateRepositoryTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 //@ExtendWith(SpringExtension.class)
 @ExtendWith(SpringExtension.class)
@@ -33,9 +34,24 @@ public class AssociateServiceTest {
     void testFindAssociateByIdNoResultFound(){
         Long associateId = 999L;
 
-        //when(repository.findById(userId)).thenThrow(ChangeSetPersister.NotFoundException.class);
+        when(repository.findById(associateId)).thenThrow(ResponseStatusException.class);
 
-        //Associate associate = service.
+        assertThrows(ResponseStatusException.class, () -> service.getAssociateById(associateId));
+        verify(repository,times(1)).findById(associateId);
+    }
+
+    @Test
+    void testFindAssociateByIdNoResultFoundVerifyHttpStatusCode(){
+        Long associateId = 999L;
+
+        when(repository.findById(associateId)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"User with id "+associateId+" not found!"));
+
+        try {
+            service.getAssociateById(associateId);
+        }catch (ResponseStatusException ex){
+            assertEquals(ex.getStatusCode(), HttpStatus.NOT_FOUND);
+        }
+        verify(repository,times(1)).findById(associateId);
     }
 
     @Test
@@ -50,7 +66,7 @@ public class AssociateServiceTest {
         when(repository.findAll()).thenReturn(associates);
 
         List<Associate> expected = service.getAllAssociates();
-        Assertions.assertEquals(expected.size(),associates.size());
+        assertEquals(expected.size(),associates.size());
         verify(repository,times(1)).findAll();
 
     }
