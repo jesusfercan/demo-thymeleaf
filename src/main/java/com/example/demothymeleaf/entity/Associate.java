@@ -21,6 +21,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Associate {
 
     @Id
