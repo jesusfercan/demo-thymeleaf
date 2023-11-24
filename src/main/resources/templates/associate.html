@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{associate.page.title}">Associates page</title>
+    <th:block  th:insert="~{fragments/headerFooter :: fragmentHead}"></th:block>
+
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+
+        <th:block th:insert="~{fragments/leftMenu :: leftMenu}"/>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+
+                <th:block th:insert="~{fragments/topBar :: topBar}"/>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <th:block th:if="${param.created !=null || param.updated !=null}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong th:if="${param.created !=null}">Asociado creado correctamente!</strong>
+                            <strong th:if="${param.updated !=null}">Asociado actualizado correctamente!</strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </th:block>
+
+
+                    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Principal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Contacto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Partidos</a>
+                        </li>
+                    </ul>
+
+                    <form th:action="|/associate${associateId!=null ? '/'+associateId : ''}|" method='POST' enctype="multipart/form-data"
+                          th:object="${associate}"><br>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="form-group">
+                                <label for="associate.name">Nombre</label>
+                                <input type="text" class="form-control" id="associate.name" placeholder="Nombre"
+                                         th:field="*{name}" />
+                                <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                <!--                                       name="associate.name" th:value="|${associate != null ? associate.name : ''}|">-->
+                            </div>
+                            <div class="form-group">
+                                <label for="associate.surname">Apellidos</label>
+                                <input type="text" class="form-control" id="associate.surname" placeholder="Apellidos"
+                                       th:field="*{surname}" />
+                                <div class="alert alert-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
+
+                                <!--                                       name="associate.surname" th:value="|${associate != null ? associate.surname : ''}|">-->
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="associate.email">Dirección de email</label>
+                                    <input type="email" class="form-control" id="associate.email" aria-describedby="emailHelp" placeholder="Enter email"
+                                           th:field="*{email}" />
+                                <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+                                <!--                                           name="associate.email" th:value="|${associate != null ? associate.email : ''}|">-->
+<!--                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+                                </div>
+
+                            <div class="custom-file">
+                                <input type="file" name="image" class="custom-file-input" id="image" lang="es">
+                                <label class="custom-file-label" for="image">Seleccionar Archivo</label>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Datos de contacto</div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Datos / informes de partidos</div>
+
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+                <!-- // End Begin Page Content -->
+
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div><!-- End Page Wrapper -->
+
+    <th:block th:insert="~{fragments/headerFooter :: fragmentFoot}"/>
+</body>
+</html>
