@@ -39,12 +39,13 @@ public class CustomSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new RecaptchaFilter(recaptchaService,"/auth/login?error=2"), UsernamePasswordAuthenticationFilter.class)
+                //todo: descomentar para activar recapcha
+                //.addFilterBefore(new RecaptchaFilter(recaptchaService,"/auth/login?error=2"), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
-                        //.invalidSessionUrl("/auth/login?error=3")//todo: probar, no conseguido funcionar
+                        .invalidSessionUrl("/auth/login?error=3") //funciona cuando caduca la sesion ?? minutos
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .maximumSessions(1)
-                        .expiredUrl("/auth/login?error=3")) //todo: probar, no conseguido funcionar
+                        .expiredUrl("/auth/login?error=3")) // funciona cuando se inicia otra sesion, cuando se caduca no he conseguido
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/checkLogin")
