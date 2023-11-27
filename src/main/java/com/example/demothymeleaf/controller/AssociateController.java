@@ -3,6 +3,8 @@ package com.example.demothymeleaf.controller;
 import com.example.demothymeleaf.dto.AssociateDto;
 import com.example.demothymeleaf.service.AssociateService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/associate")
 public class AssociateController {
 
-    private static final String ASSOCIATE_LIST_VIEW = "associates";
-    private static final String ASSOCIATE_FORM_VIEW = "associate";
+    public static final String ASSOCIATE_LIST_VIEW = "associates";
+    public static final String ASSOCIATE_FORM_VIEW = "associate";
 
     @Autowired
     private AssociateService associateService;
@@ -49,10 +51,10 @@ public class AssociateController {
         return new ModelAndView("associate", "associate", new AssociateDto());
     }
     @PostMapping//(consumes = { "multipart/form-data" })
-    public String createAssociate(@RequestParam MultipartFile image,
-                                @Valid @ModelAttribute(name = "associate") AssociateDto associateDto,
-                                BindingResult bindingResult,
-                                Model model){
+    public String createAssociate(@RequestParam(required = false) MultipartFile image,
+                                  @Valid @ModelAttribute(name = "associate") AssociateDto associateDto,
+                                  BindingResult bindingResult,
+                                  Model model){
 
         if(!bindingResult.hasErrors()) {
             return "redirect:/associate/"+ associateService.createAssociate(associateDto).getId()
@@ -65,7 +67,7 @@ public class AssociateController {
 
     @PostMapping("/{associateId}")
     public String updateAssociate(@PathVariable Long associateId,
-                                  @RequestParam MultipartFile image,
+                                  @RequestParam(required = false) MultipartFile image,
                                   @Valid @ModelAttribute(name = "associate") AssociateDto associateDto,
                                   BindingResult bindingResult,
                                   Model model){
@@ -85,7 +87,11 @@ public class AssociateController {
         HttpStatus status = HttpStatus.OK;
         try {
             associateService.deleteAssociate(associateId);
-        }catch (Exception e){
+        }catch (ResponseStatusException ex){
+            status = HttpStatus.valueOf(ex.getStatusCode().value());
+            deleteMessageInfo = "Error: " + ex.getLocalizedMessage();
+        }
+        catch (Exception e){
             deleteMessageInfo = "Error: " + e.getLocalizedMessage();
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
@@ -122,7 +128,8 @@ public class AssociateController {
             mv.addObject("errorCode", statusCode.value());
             mv.addObject("url", "/associate");
 
-        }else {
+        }
+        else {
             mv.addObject("errorCode", "500");
             mv.addObject("url", "/");
         }

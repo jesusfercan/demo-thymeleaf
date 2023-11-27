@@ -23,6 +23,11 @@
                                 <div class="text-center">
                                     <div th:if="${error1}" class="alert alert-danger" role="alert">Usuario o clave incorrecto!</div>
                                     <div th:if="${error3}" class="alert alert-danger" role="alert">Sesión expirada!</div>
+<!--                                    <div th:if="${param.error} and ${session}" th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION']}">-->
+<!--                                        <div class="alert alert-dismissible alert-danger error">-->
+<!--                                            Reason: <span th:text="${errorMsg}">Demo Invalid input</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
                                 <form class="user"  name='f' action="/auth/checkLogin" method='POST'>

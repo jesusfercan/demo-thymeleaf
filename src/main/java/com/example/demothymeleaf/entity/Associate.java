@@ -40,9 +40,9 @@ public class Associate {
             this.name = associateDto.getName();
 
         if(!associateDto.getSurname().isEmpty())
-            this.name = associateDto.getSurname();
+            this.surname = associateDto.getSurname();
 
         if(!associateDto.getEmail().isEmpty())
-            this.name = associateDto.getName();
+            this.email = associateDto.getEmail();
     }
 }

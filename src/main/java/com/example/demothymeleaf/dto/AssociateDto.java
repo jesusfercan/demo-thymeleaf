@@ -22,6 +22,11 @@ public class AssociateDto {
     @Email(message = "Introduzca un email correcto")
     private String email;
 
+    public AssociateDto(Associate associate){
+        this.name = associate.getName();
+        this.surname = associate.getSurname();
+        this.email = associate.getEmail();
+    }
 
     public Associate getAssociate(){
         return Associate.builder()
