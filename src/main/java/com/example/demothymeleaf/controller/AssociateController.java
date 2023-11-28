@@ -34,7 +34,6 @@ public class AssociateController {
         model.addAttribute("associateList",associateService.getAllAssociates());
         model.addAttribute("importDataTables",true);
 
-
         return ASSOCIATE_LIST_VIEW;
     }
 
