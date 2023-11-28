@@ -72,7 +72,75 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>env-dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<build>
+				<finalName>demo-thymeleafApp</finalName>
+				<resources>
+					<resource>
+						<directory>src/main/resources/dev</directory>
+						<includes>
+							<include>*.properties</include>
+							<include>*.sql</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+		<profile>
+			<id>env-prod</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prod</value>
+				</property>
+			</activation>
+			<build>
+				<finalName>demo-thymeleafApp-prod</finalName>
+				<resources>
+					<resource>
+						<directory>src/main/resources/prod</directory>
+						<includes>
+							<include>*.properties</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+
+	</profiles>
+
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>/language/**</include>
+					<include>/static/**</include>
+					<include>/templates/**</include>
+				</includes>
+			</resource>
+
+			<!--
+			<resource>
+				<targetPath>message-bundle</targetPath>
+				<directory>src/main/resources/language</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+			-->
+
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
