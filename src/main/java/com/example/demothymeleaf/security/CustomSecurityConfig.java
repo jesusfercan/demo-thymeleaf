@@ -40,7 +40,7 @@ public class CustomSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 //todo: descomentar para activar recapcha
-                .addFilterBefore(new RecaptchaFilter(recaptchaService,"/auth/login?error=2"), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(new RecaptchaFilter(recaptchaService,"/auth/login?error=2"), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
                         .invalidSessionUrl("/auth/login?error=3") //funciona cuando caduca la sesion ?? minutos
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)

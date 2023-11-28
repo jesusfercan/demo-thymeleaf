@@ -1,6 +1,7 @@
 package com.example.demothymeleaf.entity;
 
 import com.example.demothymeleaf.dto.AssociateDto;
+import com.example.demothymeleaf.encrypt.Encrypt;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +33,11 @@ public class Associate {
     @NotBlank @Email
     private String email;
 
+    @Convert(converter = Encrypt.class)
+    private String emailEncrypted;
+
     public void updateAssociate(AssociateDto associateDto){
+
         if(Objects.isNull(associateDto))
             return;
 

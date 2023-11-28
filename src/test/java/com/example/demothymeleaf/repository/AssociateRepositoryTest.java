@@ -1,5 +1,7 @@
 package com.example.demothymeleaf.repository;
 
+import com.example.demothymeleaf.encrypt.Encrypt;
+import com.example.demothymeleaf.encrypt.EncryptFactory;
 import com.example.demothymeleaf.entity.Associate;
 import com.ulisesbocchio.jasyptspringboot.configuration.EnableEncryptablePropertiesConfiguration;
 import jakarta.validation.ConstraintViolationException;
@@ -20,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Import(EnableEncryptablePropertiesConfiguration.class)
+@Import({EnableEncryptablePropertiesConfiguration.class, Encrypt.class, EncryptFactory.class})
 public class AssociateRepositoryTest {
 
     @Autowired
@@ -115,6 +117,7 @@ public class AssociateRepositoryTest {
         // given - get associate from database import.sql file
         associate = repository.findById(associateId).get();
         associate.setSurname("apellidos");
+        associate.setEmailEncrypted(associate.getEmail());
 
         Associate savedAssociate = repository.saveAndFlush(associate);
 

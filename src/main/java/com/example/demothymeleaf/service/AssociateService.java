@@ -33,6 +33,7 @@ public class AssociateService {
         Associate associateToUpdate = getAssociateById(associateId);
         associateToUpdate.updateAssociate(associateDto);
 
+        associateToUpdate.setEmailEncrypted(associateToUpdate.getEmail());// todo eliminar
         return repository.save(associateToUpdate);
     }
 
