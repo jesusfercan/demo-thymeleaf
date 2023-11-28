@@ -1,6 +1,7 @@
 package com.example.demothymeleaf.repository;
 
 import com.example.demothymeleaf.entity.Associate;
+import com.ulisesbocchio.jasyptspringboot.configuration.EnableEncryptablePropertiesConfiguration;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Import(EnableEncryptablePropertiesConfiguration.class)
 public class AssociateRepositoryTest {
 
     @Autowired
