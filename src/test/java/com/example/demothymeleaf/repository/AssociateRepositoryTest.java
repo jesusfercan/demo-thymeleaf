@@ -3,6 +3,7 @@ package com.example.demothymeleaf.repository;
 import com.example.demothymeleaf.entity.Associate;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -116,5 +118,23 @@ public class AssociateRepositoryTest {
         // then - verify the output
         assertThat(savedAssociate).isNotNull();
         assertThat(savedAssociate.getId()).isEqualTo(associateId);
+    }
+
+    @Test
+    @DisplayName("Test Delete Associate Success")
+    @Order(7)
+    void deleteAssociateSuccess(){
+
+        associate = repository.findById(associateId).get();
+        int totalAssociatesBeforeDelete = repository.findAll().size();
+
+        repository.delete(associate);
+
+        int totalAssociatesAfterDelete = repository.findAll().size();
+        associate = repository.findById(associateId).orElse(null);
+
+        assertThat(totalAssociatesAfterDelete).isLessThan(totalAssociatesBeforeDelete);
+        assertThat(associate).isNull();
+
     }
 }
