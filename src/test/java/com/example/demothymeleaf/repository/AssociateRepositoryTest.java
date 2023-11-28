@@ -2,54 +2,65 @@ package com.example.demothymeleaf.repository;
 
 import com.example.demothymeleaf.entity.Associate;
 import jakarta.validation.ConstraintViolationException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AssociateRepositoryTest {
 
     @Autowired
     AssociateRepository repository;
 
+
+    private List<Associate> listOfAssociatesImported;
+    private Long associateId = 1L;
+    private Associate associate;
+
+
     @Test
+    @DisplayName("Test saveAssociate Launch ConstraintViolationException")
+    @Order(1)
     void testValidateLaunchConstraintViolationException(){
-        Associate  associate = new Associate();
+        associate = new Associate();
         Assertions.assertThrows(ConstraintViolationException.class, () -> repository.save(associate));
     }
     @Test
+    @DisplayName("Test saveAssociate Validate Empty Fields")
+    @Order(2)
     void testValidateEmptyFields(){
-        //System.out.println("++++ INIT TEST CAN NOT EMPTY FIELDS ++++");
-        Associate  associate = new Associate();
-        final List<String> errorEmptyFields = List.of( "name","email");
+        associate = new Associate();
+        final List<String> errorEmptyFields = List.of( "name","surname","email");
 
         try {
             repository.save(associate);
         }catch (ConstraintViolationException ex) {
 
             ex.getConstraintViolations().forEach(cv -> {
-                //System.out.println("Evaluating field: "+ cv.getPropertyPath().toString() + (errorEmptyFields.contains(cv.getPropertyPath().toString()) ? " (OK)" : " (FAIL)"));
-                Assertions.assertTrue(errorEmptyFields.contains(cv.getPropertyPath().toString()));
+               Assertions.assertTrue(errorEmptyFields.contains(cv.getPropertyPath().toString()));
             });
         }
     }
     @Test
+    @DisplayName("Test saveAssociate Validate Email type")
+    @Order(3)
     void testValidateEmailTypeToSave(){
-        Associate  associate = Associate.builder().name("Jesus").email("incorrectEmail").build();
+
+        associate = Associate.builder().name("nombre").surname("apellidos").email("email").build();
         final List<String> errorEmailFields = List.of("email");
 
         try {
             repository.save(associate);
         }catch (ConstraintViolationException ex) {
-
             ex.getConstraintViolations().forEach(cv -> {
                 Assertions.assertTrue(errorEmailFields.contains(cv.getPropertyPath().toString()));
             });
@@ -57,17 +68,53 @@ public class AssociateRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test Save-update Error validation")
+    @Order(4)
+    void updateAssociateErrorValidation(){
+
+        // given
+        associate = repository.findById(associateId).get();
+        final List<String> errorFields = List.of("surname"); // rest of fields are ok in file import.sql
+
+        // when - action or the behaviour that we are going test
+        try {
+            repository.saveAndFlush(associate);
+        }catch (ConstraintViolationException ex) {
+            ex.getConstraintViolations().forEach(cv -> {
+                Assertions.assertTrue(errorFields.contains(cv.getPropertyPath().toString()));
+            });
+        }
+
+    }
+
+    @Test
+    @DisplayName("Test Save-create Associate Success")
+    @Order(5)
     void saveAssociateOkResult(){
-        Associate  associate = Associate.builder()
-                .name("jesus")
-                .email("ramesh@gmail,com")
-                .build();
+
+        associate = Associate.builder().name("nombre").surname("appellidos").email("email@email.com").build();
 
         // when - action or the behaviour that we are going test
         Associate savedAssociate = repository.save(associate);
 
         // then - verify the output
         assertThat(savedAssociate).isNotNull();
-        assertThat(savedAssociate.getId()).isGreaterThan(0);
+        assertThat(savedAssociate.getId()).isGreaterThan(2); // because have 2 in import.sql
+    }
+
+    @Test
+    @DisplayName("Test Save-update Associate Success")
+    @Order(6)
+    void updateAssociateOkResult(){
+
+        // given - get associate from database import.sql file
+        associate = repository.findById(associateId).get();
+        associate.setSurname("apellidos");
+
+        Associate savedAssociate = repository.saveAndFlush(associate);
+
+        // then - verify the output
+        assertThat(savedAssociate).isNotNull();
+        assertThat(savedAssociate.getId()).isEqualTo(associateId);
     }
 }
